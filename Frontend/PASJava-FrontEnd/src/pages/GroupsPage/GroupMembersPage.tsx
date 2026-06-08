@@ -264,6 +264,12 @@ const GroupMembersPage = ({ group, onBack }: Props) => {
     }
   };
 
+    const getStatusClassName = (debt: any) => {
+      if (debt.confirmedByCreditor) return styles.statusPaid;
+      if (debt.paidByDebtor) return styles.statusPending;
+      return styles.statusOpen;
+    };
+
   return (
     <div className={styles.container}>
       <button onClick={onBack} className={styles.backButton}>
@@ -389,13 +395,7 @@ const GroupMembersPage = ({ group, onBack }: Props) => {
                 </strong>{" "}
                 {debt.amount.toFixed(2)} zł za <strong>{debt.title}</strong>
                 <span
-                  className={`${styles.statusBadge} ${
-                    debt.confirmedByCreditor
-                      ? styles.statusPaid
-                      : debt.paidByDebtor
-                        ? styles.statusPending
-                        : styles.statusOpen
-                  }`}
+                  className={`${styles.statusBadge} ${getStatusClassName(debt)}`}
                 >
                   {getDebtStatusLabel(debt)}
                 </span>

@@ -1,4 +1,4 @@
-import { useState, useCallback, type ReactNode } from "react";
+import { useState, useCallback, useMemo, type ReactNode } from "react";
 import graphqlClient from "../../api/graphClient";
 import { BalanceContext, type Balance } from "./BalanceContext";
 
@@ -24,7 +24,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
     `;
     try {
       const response = await graphqlClient<UserBalanceResponse>(query, { days });
-      if (response.data && response.data.userBalance) {
+      if (response.data?.userBalance) {
         setBalance(response.data.userBalance);
         
         // Podbijamy wersję przy każdym udanym pobraniu
@@ -35,9 +35,14 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+ const contextValue = useMemo(() => ({
+   balance,
+   refreshBalance,
+   refreshVersion
+ }), [balance, refreshBalance, refreshVersion]);
   return (
     // Przekazujemy refreshVersion w dół do innych komponentów
-    <BalanceContext.Provider value={{ balance, refreshBalance, refreshVersion }}>
+    <BalanceContext.Provider value={contextValue}>
       {children}
     </BalanceContext.Provider>
   );

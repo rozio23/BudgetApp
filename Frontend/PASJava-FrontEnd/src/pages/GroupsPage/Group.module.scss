@@ -61,6 +61,21 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: color.scale($background-color, $lightness: 5%); // Przenosimy tło tutaj
+    border-radius: 10px;
+    padding-right: 1.2rem; // Miejsce na przycisk "Usuń" z prawej strony
+    transition: background 0.3s, transform 0.3s;
+
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+      transform: translateY(-2px);
+    }
+  }
 }
 
 .groupItem {
@@ -75,11 +90,6 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: $text-color;
-
-  &:hover {
-    background-color: rgba($primary-color, 0.1);
-    transform: translateY(-2px);
-  }
 }
 
 .deleteButton {
@@ -99,7 +109,7 @@
 }
 
 .backButton {
-  background-color: gray;
+  background-color: #555555;
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;

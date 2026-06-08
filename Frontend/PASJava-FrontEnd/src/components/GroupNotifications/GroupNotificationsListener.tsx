@@ -14,7 +14,7 @@ interface GroupNotification {
 }
 
 const getWebSocketUrl = (token: string) => {
-  const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+  const protocol = globalThis.location.protocol === "https:" ? "wss" : "ws";
   return `${protocol}://localhost:8080/ws/group-notifications?token=${encodeURIComponent(token)}`;
 };
 
@@ -35,7 +35,7 @@ const GroupNotificationsListener = () => {
         if (notification.type === "GROUP_EXPENSE_ADDED") {
           toast.info(notification.message);
 
-          window.dispatchEvent(new Event("refresh_group_data"));
+          globalThis.dispatchEvent(new Event("refresh_group_data"));
         }
       } catch (error) {
         console.error("Nie udało się obsłużyć komunikatu grupowego:", error);

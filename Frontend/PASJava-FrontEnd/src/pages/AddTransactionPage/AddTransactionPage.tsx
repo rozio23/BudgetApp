@@ -67,7 +67,7 @@ const AddTransactionPage = () => {
           <input 
             type="number" 
             value={amount} 
-            onChange={(e) => setAmount(parseFloat(e.target.value))} 
+            onChange={(e) => setAmount(Number.parseFloat(e.target.value))}
             required 
             className={styles.input}
           />

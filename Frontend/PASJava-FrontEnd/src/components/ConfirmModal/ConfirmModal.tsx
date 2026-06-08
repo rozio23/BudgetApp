@@ -23,25 +23,37 @@ const ConfirmModal = ({
   if (!visible) return null;
 
   return (
-    <div className={styles.modalOverlay} role="presentation" onClick={onCancel}>
-      <div
+    <div
+      className={styles.modalOverlay}
+      onClick={onCancel}
+      role="button"
+      tabIndex={-1}
+      aria-label="Zamknij tło okna"
+    >
+      {/* Zamieniamy <div> na natywny tag <dialog> */}
+      <dialog
+        open /* Flaga open sprawia, że komponent jest widoczny */
         className={styles.modal}
-        role="dialog"
-        aria-modal="true"
         aria-labelledby="confirm-modal-title"
-        onClick={(event) => event.stopPropagation()}
+        /* Usunięcie onClick zapobiega błędowi "Non-interactive elements" */
+        onKeyDown={(event) => event.stopPropagation()}
       >
-        <h3 id="confirm-modal-title">{title}</h3>
-        <p>{message}</p>
-        <div className={styles.actions}>
-          <button type="button" className={styles.cancel} onClick={onCancel}>
-            {cancelLabel}
-          </button>
-          <button type="button" className={styles.confirm} onClick={onConfirm}>
-            {confirmLabel}
-          </button>
+        {/* Otaczamy zawartość wewnętrzną elementem wstrzymującym propagację kliknięć,
+           ale bez dodawania interaktywnych listenerów bezpośrednio do tagu dialog
+        */}
+        <div onClick={(event) => event.stopPropagation()} role="presentation">
+          <h3 id="confirm-modal-title">{title}</h3>
+          <p>{message}</p>
+          <div className={styles.actions}>
+            <button type="button" className={styles.cancel} onClick={onCancel}>
+              {cancelLabel}
+            </button>
+            <button type="button" className={styles.confirm} onClick={onConfirm}>
+              {confirmLabel}
+            </button>
+          </div>
         </div>
-      </div>
+      </dialog>
     </div>
   );
 };

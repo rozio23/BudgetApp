@@ -80,21 +80,28 @@ const GroupsPage: React.FC = () => {
 
       <ul className={styles.list}>
         {groups.map((group) => (
-          <li
-            key={group.id}
-            onClick={() => setSelectedGroup(group)}
-            className={styles.groupItem}
-          >
-            {group.name}
+          <li key={group.id}>
+            {/* Zamieniamy onClick z li na w pełni interaktywny button, który stylizujemy tak samo */}
+            <button
+              type="button"
+              className={styles.groupItem}
+              onClick={() => setSelectedGroup(group)}
+              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0 }} /* Szybki reset domyślnych stylów przycisku, jeśli trzeba */
+            >
+              {group.name}
+            </button>
+
+            {/* Przycisk usuwania zostaje na swoim miejscu, poza przyciskiem wyboru grupy */}
             {String(user?.id) === String(group.ownerId) && (
               <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setGroupToDelete(group);
-              }}
-              className={styles.deleteButton}
-            >
-              Usuń
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setGroupToDelete(group);
+                }}
+                className={styles.deleteButton}
+              >
+                Usuń
               </button>
             )}
           </li>

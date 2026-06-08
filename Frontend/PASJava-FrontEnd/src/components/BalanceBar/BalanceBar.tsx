@@ -35,11 +35,11 @@ const BalanceBar = () => {
     };
 
     // Podpinamy nasłuchiwacz
-    window.addEventListener("refresh_group_data", handleDataRefresh);
+    globalThis.addEventListener("refresh_group_data", handleDataRefresh);
 
     // Sprzątamy po odmontowaniu komponentu
     return () => {
-      window.removeEventListener("refresh_group_data", handleDataRefresh);
+      globalThis.removeEventListener("refresh_group_data", handleDataRefresh);
     };
   }, [isAuthenticated, range, refreshBalance]);
   // --------------------------------------------------------
