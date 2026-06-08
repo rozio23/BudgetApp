@@ -1,0 +1,17 @@
+import { createContext } from "react";
+
+export interface Balance {
+  totalIncome: number;
+  totalExpense: number;
+  balance: number;
+}
+
+interface BalanceContextType {
+  balance: Balance | null;
+  refreshBalance: (days: number | null) => void;
+  refreshVersion: number;
+}
+
+export const BalanceContext = createContext<BalanceContextType | undefined>(
+  undefined
+);
