@@ -14,12 +14,24 @@ interface GroupNotification {
 }
 
 const getWebSocketUrl = (token: string) => {
-  // Walidacja struktury tokenu (blokuje wstrzykiwanie złośliwych parametrów URL)
-  const isSafe = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/.test(token);
+  // 1. Rozbijamy token na części składowe JWT (Header, Payload, Signature)
+  const parts = token.split('.');
 
-  if (!isSafe) {
+  // 2. Token JWT musi składać się dokładnie z 3 części
+  if (parts.length !== 3) {
+    throw new Error("Invalid token structure for WebSocket connection");
+  }
+
+  // 3. Prosty, bezpieczny Regex bez ryzyka backtrackingu (Base64URL)
+  const safeRegex = /^[A-Za-z0-9-_=]+$/;
+
+  // 4. Walidujemy czy każda sekcja zawiera wyłącznie dozwolone znaki
+  const isEveryPartSafe = parts.every(part => safeRegex.test(part));
+
+  if (!isEveryPartSafe) {
     throw new Error("Invalid token format for WebSocket connection");
   }
+
   const protocol = globalThis.location.protocol === "https:" ? "wss" : "ws";
   return `${protocol}://localhost:8080/ws/group-notifications?token=${encodeURIComponent(token)}`;
 };
