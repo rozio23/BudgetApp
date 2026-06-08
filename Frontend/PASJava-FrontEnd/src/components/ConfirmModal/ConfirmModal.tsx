@@ -23,25 +23,25 @@ const ConfirmModal = ({
   if (!visible) return null;
 
   return (
-    <div
+    /* Zewnętrzny kontener (tło) staje się pełnoprawnym przyciskiem */
+    <button
+      type="button"
       className={styles.modalOverlay}
       onClick={onCancel}
-      role="button"
-      tabIndex={-1}
       aria-label="Zamknij tło okna"
     >
-      {/* Zamieniamy <div> na natywny tag <dialog> */}
+      {/* Sekcja wewnętrzna okna - natywny <dialog> bez eventów */}
       <dialog
-        open /* Flaga open sprawia, że komponent jest widoczny */
+        open
         className={styles.modal}
         aria-labelledby="confirm-modal-title"
-        /* Usunięcie onClick zapobiega błędowi "Non-interactive elements" */
-        onKeyDown={(event) => event.stopPropagation()}
       >
-        {/* Otaczamy zawartość wewnętrzną elementem wstrzymującym propagację kliknięć,
-           ale bez dodawania interaktywnych listenerów bezpośrednio do tagu dialog
-        */}
-        <div onClick={(event) => event.stopPropagation()} role="presentation">
+        {/* Ten div zatrzymuje propagację kliknięć, żeby kliknięcie wewnątrz okna go nie zamknęło */}
+        <div
+          onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
+          role="presentation"
+        >
           <h3 id="confirm-modal-title">{title}</h3>
           <p>{message}</p>
           <div className={styles.actions}>
@@ -54,7 +54,7 @@ const ConfirmModal = ({
           </div>
         </div>
       </dialog>
-    </div>
+    </button>
   );
 };
 

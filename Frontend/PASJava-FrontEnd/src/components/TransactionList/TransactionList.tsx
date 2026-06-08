@@ -169,9 +169,11 @@ const TransactionList = () => {
   if (loading) return <p>Ładowanie...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-    const getTransactionLabel = (type: string) => {
-     if (type === "INCOME") return "Przychód";
-     if (type === "EXPENSE") return "Wydatek"; // lub po prostu: return "Wydatek";
+   const getTransactionLabel = (type: string) => {
+      if (type === "INCOME") {
+        return "Przychód";
+      }
+      return "Wydatek";
    };
   return (
     <div className={styles["transaction-list"]}>
